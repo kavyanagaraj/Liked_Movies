@@ -8,14 +8,14 @@ export class HttpService {
   constructor(private _http: Http) { 
   }
   //Service to make a get request to the route /movies to retrieve all the movies
-  getMovies(){
+  get_movies(){
     return this._http.get('/movies')
     .map(data => data.json())
     .toPromise();
   }
 
   //Service to make a http request to the route /review/id to retrieve the review of the movie with the id in the url
-  retrieveReview(id){
+  retrieve_review(id){
     return this._http.get(`/review/${id}`)
     .map(data => data.json())
     .toPromise();
