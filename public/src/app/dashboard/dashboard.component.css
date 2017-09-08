@@ -1,0 +1,16 @@
+#movie_image{
+    height: 100px;
+    width: 70px;
+}
+
+.review{
+    padding: 10px;
+}
+
+.decade{
+    text-align: center;
+}
+
+#error{
+    text-align: center;
+}

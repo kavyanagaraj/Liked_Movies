@@ -1,0 +1,65 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Movies Evan Likes</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+        <form class="navbar-form navbar-left">
+          <!-- Input search two way bound as searchText to filter the list -->
+          <input type="text" [(ngModel)]="searchText" name = "search" #search = 'ngModel' class="form-control" placeholder="Search by title">
+        </form>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Decade <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <!-- Dropdown to get the decades -->
+            <li  class="list-group-item decade" *ngFor="let x of decade" (click)="filter_decade(x)">{{x}}</li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+<!-- Main Content -->
+<div class = "container">
+    <h2 *ngIf = error id = "error"> {{error.status}} - {{error.statusText}}</h2>
+  <!-- Accordian to show title of the movie and review on click -->
+  <!-- Using config-panel-one and closeOthers for only one review to be open at a time -->
+  <ngb-accordion activeIds="config-panel-one" [closeOthers]="true">
+    <!-- Looping to get the list of movies -->
+    <!-- Using pipe custom filter to filter the list based on search and decadefilter to filter the list based on the decade chosen  -->
+    <ngb-panel id={{movie.id}} *ngFor='let movie of movies | filter : searchText | decadefilter : selectedDecade'>
+        <!-- Title for the accordian which opens the rotten tomato site for that movie  -->
+        <!-- List panel on click gets and shows the review in ngbPanelContent-->
+        <ng-template ngbPanelTitle>
+            <li class="list-group-item" (click) = "get_review(movie.id)"><span (click) = "goto_url(movie.url)">{{movie.score*100}}% - {{movie.title}} - {{movie.year}}</span></li>
+        </ng-template>
+        <!-- To show the review and the image -->
+        <ng-template ngbPanelContent>
+          <div class = 'review' *ngIf = review>
+            <div class="row">
+              <!-- Using the grid system to make it responsive -->
+              <div class="col-xs-2 col-md-1">                   
+                <img src={{review.image_url}} id = "movie_image" alt=":(">
+              </div>
+              <div class="col-xs-10 col-md-11">
+                <p>{{review.review}}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ngb-panel>
+    </ngb-accordion>
+</div>
+
+
