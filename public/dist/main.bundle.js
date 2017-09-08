@@ -231,7 +231,7 @@ var DashboardComponent = (function () {
         var _this = this;
         //Checking if data exists in local storage. If it doesn't exist then sending a request to the server to get data
         if (!localStorage['movies']) {
-            this._httpService.getMovies()
+            this._httpService.get_movies()
                 .then(function (data) {
                 _this.error = '';
                 _this.movies = data;
@@ -256,7 +256,7 @@ var DashboardComponent = (function () {
     //Triggers when the list is clicked to get review of a movie
     DashboardComponent.prototype.get_review = function (id) {
         var _this = this;
-        this._httpService.retrieveReview(id)
+        this._httpService.retrieve_review(id)
             .then(function (data) {
             _this.review = data;
             _this.error = '';
@@ -272,26 +272,26 @@ var DashboardComponent = (function () {
     };
     //Sets the decade to be filtered on click
     DashboardComponent.prototype.filter_decade = function (decade) {
-        this.selectedDecade = decade;
+        this.selected_decade = decade;
     };
     //Computes the decade array for filter
     DashboardComponent.prototype.compute_decade = function () {
-        var minYear = this.movies[0].year;
-        var maxYear = this.movies[0].year;
+        var min_year = this.movies[0].year;
+        var max_year = this.movies[0].year;
         //Gets the minimum and maximum year in the list
         for (var i = 0; i < this.movies.length; i++) {
-            if (minYear > this.movies[i].year) {
-                minYear = this.movies[i].year;
+            if (min_year > this.movies[i].year) {
+                min_year = this.movies[i].year;
             }
-            if (this.movies[i].year > maxYear) {
-                maxYear = this.movies[i];
+            if (this.movies[i].year > max_year) {
+                max_year = this.movies[i];
             }
         }
         //Gives minYear and maxYear
-        minYear = minYear - (minYear % 10);
-        maxYear = maxYear - (maxYear % 10);
+        min_year = min_year - (min_year % 10);
+        max_year = max_year - (max_year % 10);
         //Creates the decade array
-        for (var i = parseInt(minYear); i <= parseInt(maxYear); i += 10) {
+        for (var i = parseInt(min_year); i <= parseInt(max_year); i += 10) {
             this.decade.push(i);
         }
         return this.decade;
@@ -304,17 +304,17 @@ var DashboardComponent = (function () {
             storage.removeItem(x);
             return true;
         }
-        catch (e) {
-            return e instanceof DOMException && (
+        catch (err) {
+            return err instanceof DOMException && (
             // everything except Firefox
-            e.code === 22 ||
+            err.code === 22 ||
                 // Firefox
-                e.code === 1014 ||
+                err.code === 1014 ||
                 // test name field too, because code might not be present
                 // everything except Firefox
-                e.name === 'QuotaExceededError' ||
+                err.name === 'QuotaExceededError' ||
                 // Firefox
-                e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+                err.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
                 // acknowledge QuotaExceededError only if there's something already stored
                 storage.length !== 0;
         }
@@ -442,13 +442,13 @@ var HttpService = (function () {
         this._http = _http;
     }
     //Service to make a get request to the route /movies to retrieve all the movies
-    HttpService.prototype.getMovies = function () {
+    HttpService.prototype.get_movies = function () {
         return this._http.get('/movies')
             .map(function (data) { return data.json(); })
             .toPromise();
     };
     //Service to make a http request to the route /review/id to retrieve the review of the movie with the id in the url
-    HttpService.prototype.retrieveReview = function (id) {
+    HttpService.prototype.retrieve_review = function (id) {
         return this._http.get("/review/" + id)
             .map(function (data) { return data.json(); })
             .toPromise();
