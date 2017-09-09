@@ -26,11 +26,11 @@ export class DashboardComponent implements OnInit {
                         this.movies = data; 
                         this.compute_decade();
                         if(this.storageAvailable){
-                          localStorage.setItem("movies", JSON.stringify(data))
+                          localStorage.setItem("movies", JSON.stringify(data));
                         }
                       })
       .catch( err => {  console.log("error in getting data",err); 
-                        this.error = err
+                        this.error = err;
                       }); 
     }
     else{
@@ -45,10 +45,12 @@ export class DashboardComponent implements OnInit {
   //Triggers when the list is clicked to get review of a movie
   get_review(id: any){
     this._httpService.retrieve_review(id)
-    .then( data => {  this.review = data; 
+    .then( data => {  
+                      this.review = data;
                       this.error = '' 
                     })
-    .catch( err => {  this.error = err;
+    .catch( err => {  
+                      this.error = err;
                       console.log("error in getting data",err);
                    }); 
   }
@@ -56,6 +58,7 @@ export class DashboardComponent implements OnInit {
   //To open rotten tomato site in a new tab when link is clicked
   goto_url(url: string){
     window.open(url, "_blank");
+    event.stopPropagation();
   }
 
   //Sets the decade to be filtered on click

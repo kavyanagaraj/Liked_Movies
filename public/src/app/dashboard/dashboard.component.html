@@ -32,7 +32,7 @@
 
 <!-- Main Content -->
 <div class = "container">
-    <h2 *ngIf = error id = "error"> {{error.status}} - {{error.statusText}}</h2>
+  <h2 *ngIf = error id = "error"> {{error.status}} - {{error.statusText}}</h2>
   <!-- Accordian to show title of the movie and review on click -->
   <!-- Using config-panel-one and closeOthers for only one review to be open at a time -->
   <ngb-accordion activeIds="config-panel-one" [closeOthers]="true">
